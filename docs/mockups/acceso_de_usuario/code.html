@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login - Contador Personal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#ffb77d",
+                      "secondary": "#b9c7e0",
+                      "on-tertiary-container": "#ffe1cb",
+                      "on-error-container": "#ffdad6",
+                      "outline-variant": "#464554",
+                      "on-secondary-fixed": "#0d1c2f",
+                      "tertiary-container": "#9d5400",
+                      "on-tertiary": "#4d2600",
+                      "tertiary-fixed-dim": "#ffb77d",
+                      "outline": "#918f9f",
+                      "surface-container-high": "#222a3d",
+                      "background": "#0b1326",
+                      "on-primary-fixed": "#0c006a",
+                      "on-primary-container": "#e7e4ff",
+                      "on-secondary-container": "#abb9d2",
+                      "primary-fixed": "#e2dfff",
+                      "primary-fixed-dim": "#c2c1ff",
+                      "error": "#ffb4ab",
+                      "inverse-on-surface": "#283044",
+                      "surface": "#0b1326",
+                      "surface-variant": "#2d3449",
+                      "surface-container-highest": "#2d3449",
+                      "surface-dim": "#0b1326",
+                      "secondary-fixed-dim": "#b9c7e0",
+                      "on-error": "#690005",
+                      "on-secondary-fixed-variant": "#3a485c",
+                      "on-background": "#dae2fd",
+                      "primary": "#c2c1ff",
+                      "error-container": "#93000a",
+                      "on-surface-variant": "#c7c4d6",
+                      "inverse-surface": "#dae2fd",
+                      "on-surface": "#dae2fd",
+                      "on-tertiary-fixed-variant": "#6e3900",
+                      "tertiary-fixed": "#ffdcc3",
+                      "surface-container": "#171f33",
+                      "primary-container": "#5856d6",
+                      "surface-container-lowest": "#060e20",
+                      "on-primary-fixed-variant": "#3631b4",
+                      "secondary-fixed": "#d5e3fd",
+                      "inverse-primary": "#4f4ccd",
+                      "surface-container-low": "#131b2e",
+                      "on-primary": "#1c0b9f",
+                      "surface-bright": "#31394d",
+                      "on-secondary": "#233144",
+                      "secondary-container": "#3c4a5e",
+                      "surface-tint": "#c2c1ff",
+                      "on-tertiary-fixed": "#2f1500"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Inter"
+                      ],
+                      "body": [
+                              "Inter"
+                      ],
+                      "label": [
+                              "Inter"
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: theme('colors.surface-container-lowest');
+            color: theme('colors.on-background');
+        }
+        
+        .glow-bg {
+            background: radial-gradient(circle at 50% -20%, theme('colors.primary-container/20'), transparent 60%);
+        }
+
+        .glass-panel {
+            background: theme('colors.surface-container/60');
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .gradient-button {
+            background: linear-gradient(135deg, theme('colors.primary'), theme('colors.primary-container'));
+        }
+
+        .input-field {
+            background-color: transparent;
+            border: 1px solid theme('colors.outline-variant/30');
+            color: theme('colors.on-surface');
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: theme('colors.primary');
+            background-color: theme('colors.primary/5');
+            box-shadow: 0 0 0 1px theme('colors.primary/20');
+        }
+
+        .input-field::placeholder {
+            color: theme('colors.on-surface-variant/50');
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex items-center justify-center p-4 glow-bg relative overflow-hidden">
+<!-- Ambient glowing orbs -->
+<div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-primary-container/10 blur-[100px] pointer-events-none"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-secondary-container/10 blur-[100px] pointer-events-none"></div>
+<main class="w-full max-w-md relative z-10">
+<!-- Logo Area -->
+<div class="text-center mb-10">
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-surface-container-highest shadow-[0_8px_30px_rgb(6,14,32,0.4)] mb-6">
+<span class="material-symbols-outlined text-4xl text-primary" data-icon="account_balance_wallet" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<h1 class="text-4xl font-black tracking-tighter text-on-surface mb-2 font-headline">Contador Personal</h1>
+<p class="text-on-surface-variant text-sm font-label tracking-wide">Secure Financial Management</p>
+</div>
+<!-- Login Card -->
+<div class="glass-panel rounded-2xl p-8 shadow-2xl shadow-surface-container-lowest/50 border border-white/5 relative overflow-hidden">
+<!-- Subtle highlight line top -->
+<div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+<form action="#" class="space-y-6" method="POST">
+<!-- Email Field -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold text-on-surface-variant tracking-wider uppercase" for="email">Email Address</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant/70 text-lg" data-icon="mail">mail</span>
+</div>
+<input class="input-field block w-full pl-11 pr-4 py-3.5 rounded-xl text-sm font-body focus:ring-0" id="email" name="email" placeholder="name@example.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<label class="block text-xs font-semibold text-on-surface-variant tracking-wider uppercase" for="password">Password</label>
+<a class="text-xs font-medium text-primary hover:text-primary-fixed transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant/70 text-lg" data-icon="lock">lock</span>
+</div>
+<input class="input-field block w-full pl-11 pr-11 py-3.5 rounded-xl text-sm font-body focus:ring-0" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<button class="absolute inset-y-0 right-0 pr-4 flex items-center text-on-surface-variant hover:text-primary transition-colors focus:outline-none" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="visibility_off">visibility_off</span>
+</button>
+</div>
+</div>
+<!-- Sign In Button -->
+<button class="w-full gradient-button text-on-primary-fixed font-bold py-4 rounded-xl shadow-[0_8px_20px_rgba(194,193,255,0.15)] hover:shadow-[0_12px_25px_rgba(194,193,255,0.25)] hover:opacity-90 transition-all active:scale-[0.98] mt-8 flex items-center justify-center gap-2" type="submit">
+<span>Sign In</span>
+<span class="material-symbols-outlined text-sm font-bold" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+</div>
+<!-- Sign Up Link -->
+<div class="mt-8 text-center">
+<p class="text-sm text-on-surface-variant">
+                Don't have an account? 
+                <a class="font-semibold text-primary hover:text-primary-fixed hover:underline transition-colors ml-1" href="#">Sign Up</a>
+</p>
+</div>
+</main>
+</body></html>
