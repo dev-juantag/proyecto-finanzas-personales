@@ -20,10 +20,11 @@ export default function TransactionsPage() {
     );
   }
 
-  // Lógica de Paginación
-  const totalPages = Math.ceil(transactions.length / itemsPerPage);
+  // Lógica de Ordenamiento y Paginación
+  const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const totalPages = Math.ceil(sortedTransactions.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentTransactions = transactions.slice(startIndex, startIndex + itemsPerPage);
+  const currentTransactions = sortedTransactions.slice(startIndex, startIndex + itemsPerPage);
 
   async function handleDelete(id: string) {
     if (!confirm("¿Estás seguro de eliminar esta transacción?")) return;
@@ -45,7 +46,7 @@ export default function TransactionsPage() {
             Transacciones
           </h1>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Mostrando {startIndex + 1}-{Math.min(startIndex + itemsPerPage, transactions.length)} de {transactions.length} movimientos.
+            Mostrando {startIndex + 1}-{Math.min(startIndex + itemsPerPage, sortedTransactions.length)} de {sortedTransactions.length} movimientos.
           </p>
         </div>
         <DashboardActions accounts={accounts} categories={categories} />

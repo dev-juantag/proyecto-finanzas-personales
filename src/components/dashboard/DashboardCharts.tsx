@@ -55,8 +55,8 @@ export default function DashboardCharts({ data }: { data: ChartData }) {
               <Tooltip 
                 contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
               />
-              <Bar dataKey="ingresos" fill="#10b981" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="gastos" fill="#ef4444" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="ingresos" fill="#6ee7b7" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="gastos" fill="#fca5a5" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -124,8 +124,8 @@ export default function DashboardCharts({ data }: { data: ChartData }) {
               <Tooltip 
                 contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
               />
-              <Bar dataKey="ingresos" fill="#10b981" opacity={0.6} radius={[4, 4, 0, 0]} />
-              <Bar dataKey="gastos" fill="#ef4444" opacity={0.6} radius={[4, 4, 0, 0]} />
+              <Bar dataKey="ingresos" fill="#6ee7b7" opacity={0.8} radius={[4, 4, 0, 0]} />
+              <Bar dataKey="gastos" fill="#fca5a5" opacity={0.8} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

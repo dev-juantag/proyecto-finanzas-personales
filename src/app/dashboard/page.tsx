@@ -25,6 +25,18 @@ export default function DashboardPage() {
   const now = new Date();
   const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   
+  // Pastel color palette for categories
+  const pastelColors = [
+    "#fca5a5", // pastel red
+    "#fdba74", // pastel orange
+    "#fde047", // pastel yellow
+    "#a7f3d0", // pastel green
+    "#99f6e4", // pastel teal
+    "#bfdbfe", // pastel blue
+    "#c084fc", // pastel purple
+    "#f472b6", // pastel pink
+  ];
+  
   const thisMonthTxs = transactions.filter(t => new Date(t.date) >= firstDayOfMonth);
   const monthlyIncome = thisMonthTxs.filter(t => t.type === 'INCOME').reduce((a, b) => a + b.amount, 0);
   const monthlyExpense = thisMonthTxs.filter(t => t.type === 'EXPENSE').reduce((a, b) => a + b.amount, 0);
@@ -43,11 +55,11 @@ export default function DashboardPage() {
     ],
     categoryDistribution: categories
       .filter(c => c.type === 'EXPENSE')
-      .map(c => {
+      .map((c, index) => {
         const spent = thisMonthTxs
           .filter(t => t.categoryId === c.id)
           .reduce((a, b) => a + b.amount, 0);
-        return { name: c.name, value: spent, color: `#${Math.floor(Math.random()*16777215).toString(16)}` };
+        return { name: c.name, value: spent, color: pastelColors[index % pastelColors.length] };
       })
       .filter(c => c.value > 0)
       .slice(0, 5)

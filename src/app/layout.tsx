@@ -14,8 +14,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Contador Personal",
-  description: "Gestión de finanzas personales simplificada",
+  title: "Contador Personal | Gestiona tus finanzas",
+  description: "Plataforma intuitiva para la gestión de finanzas personales. Controla tus ingresos, gastos, presupuestos y visualiza estadísticas en tiempo real.",
+  keywords: ["finanzas", "contador", "presupuesto", "dinero", "gastos", "ingresos"],
+  authors: [{ name: "Juan Taguado" }],
+  openGraph: {
+    title: "Contador Personal",
+    description: "Gestión de finanzas personales simplificada",
+    type: "website",
+    locale: "es_CO",
+  },
 };
 
 export default function RootLayout({
