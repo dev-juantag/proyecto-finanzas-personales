@@ -20,7 +20,7 @@ export default function AccountsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Mis Cuentas</h1>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Gestiona tus cuentas bancarias y efectivo.</p>
@@ -28,10 +28,10 @@ export default function AccountsPage() {
         <AccountsActions />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {accounts.length > 0 ? (
           accounts.map(acc => (
-            <div key={acc.id} className="group bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all relative">
+            <div key={acc.id} className="group bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all relative">
               <div className="flex items-center justify-between mb-4">
                 <div className={`${acc.type === 'CASH' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600' : 'bg-blue-100 dark:bg-blue-900/30 text-blue-600'} p-3 rounded-xl`}>
                   {acc.type === 'CASH' ? <Cash className="w-6 h-6" /> : <Bank className="w-6 h-6" />}

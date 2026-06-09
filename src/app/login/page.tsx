@@ -46,7 +46,7 @@ export default function LoginPage() {
             <Wallet className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
           </div>
           <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-            Bienvenido de nuevo
+            Bienvenido
           </h2>
           <p className="mt-2 text-center text-sm text-slate-600 dark:text-slate-400">
             Ingresa a tu cuenta para gestionar tus finanzas

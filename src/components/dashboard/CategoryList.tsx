@@ -47,22 +47,22 @@ export default function CategoryList({ categories, type }: CategoryListProps) {
              </div>
           </div>
           
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-2">
             <button 
               onClick={() => setEditingCategory(cat)}
               disabled={isPending}
               title="Editar categoría"
-              className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50/50 dark:hover:bg-emerald-500/10 rounded-lg transition-all"
+              className="p-2.5 sm:p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50/50 dark:hover:bg-emerald-500/10 rounded-lg transition-all"
             >
-              <Edit2 className="w-4 h-4" />
+              <Edit2 className="w-4 h-4 sm:w-4 sm:h-4" />
             </button>
             <button 
               onClick={() => handleDelete(cat)}
               disabled={isPending}
               title="Eliminar categoría"
-              className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50/50 dark:hover:bg-red-500/10 rounded-lg transition-all"
+              className="p-2.5 sm:p-2 text-slate-400 hover:text-red-600 hover:bg-red-50/50 dark:hover:bg-red-500/10 rounded-lg transition-all"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-4 h-4 sm:w-4 sm:h-4" />
             </button>
           </div>
         </div>

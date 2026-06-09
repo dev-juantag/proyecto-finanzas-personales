@@ -39,7 +39,7 @@ export default function AdminUsersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center">
             <Shield className="w-6 h-6 mr-2 text-emerald-600" />
@@ -59,7 +59,54 @@ export default function AdminUsersPage() {
       </div>
 
       <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
+        
+        {/* Mobile View (Cards) */}
+        <div className="md:hidden divide-y divide-slate-100 dark:divide-slate-700">
+          {loading ? (
+            <div className="p-12 text-center flex justify-center">
+              <div className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          ) : users.map(user => (
+            <div key={user.id} className="p-4 bg-white dark:bg-slate-800 flex justify-between items-start group">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-500 font-bold">
+                  {user.name?.charAt(0) || <UserIcon className="w-5 h-5" />}
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-slate-900 dark:text-white">{user.name || "Sin nombre"}</div>
+                  <div className="text-xs text-slate-500 flex items-center mt-0.5"><Mail className="w-3 h-3 mr-1" /> {user.email}</div>
+                  <div className="mt-1.5">
+                    <span className={`px-2 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-tighter ${
+                      user.role === 'SUPERADMIN' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                    }`}>
+                      {user.role}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <button 
+                  onClick={() => {
+                    setEditingUser(user);
+                    setIsModalOpen(true);
+                  }}
+                  className="p-2 text-slate-400 hover:text-emerald-600 transition-colors bg-slate-50 dark:bg-slate-900/50 rounded-lg"
+                >
+                  <Edit2 className="w-4 h-4" />
+                </button>
+                <button 
+                  onClick={() => handleDelete(user.id)}
+                  className="p-2 text-slate-400 hover:text-red-600 transition-colors bg-slate-50 dark:bg-slate-900/50 rounded-lg"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop View (Table) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
             <thead className="bg-slate-50 dark:bg-slate-900/50">
               <tr>

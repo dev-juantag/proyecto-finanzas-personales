@@ -40,7 +40,7 @@ export default function TransactionsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
             Transacciones
@@ -53,7 +53,53 @@ export default function TransactionsPage() {
       </div>
 
       <div className="bg-white dark:bg-slate-800 shadow-sm rounded-2xl border border-slate-100 dark:border-slate-700 overflow-hidden">
-        <div className="overflow-x-auto">
+        
+        {/* Mobile View (Cards) */}
+        <div className="md:hidden divide-y divide-slate-100 dark:divide-slate-700">
+          {currentTransactions.length > 0 ? (
+            currentTransactions.map((tx) => (
+              <div key={tx.id} className="p-4 bg-white dark:bg-slate-800 flex justify-between items-center group">
+                <div className="flex items-center space-x-3">
+                  <div className={`flex-shrink-0 h-10 w-10 rounded-xl flex items-center justify-center ${
+                    tx.type === "INCOME" ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600" : "bg-red-100 dark:bg-red-900/30 text-red-600"
+                  }`}>
+                    {tx.type === "INCOME" ? <ArrowUpRight className="h-5 w-5" /> : <ArrowDownRight className="h-5 w-5" />}
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-slate-900 dark:text-white">
+                      {tx.description || tx.category.name}
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                      {tx.account?.name} • {tx.category?.name}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-right">
+                  <span className={`text-sm font-black ${tx.type === "INCOME" ? "text-emerald-600" : "text-red-600"}`}>
+                    {tx.type === "INCOME" ? "+" : "-"}${tx.amount.toLocaleString('es-ES', { minimumFractionDigits: 2 })}
+                  </span>
+                  <div className="text-[10px] text-slate-400 mt-1 flex items-center">
+                    {new Date(tx.date).toLocaleDateString("es-ES", { day: "2-digit", month: "short" })}
+                    <button 
+                      onClick={() => handleDelete(tx.id)}
+                      disabled={isPending}
+                      className="ml-2 text-slate-300 hover:text-red-500 transition-colors disabled:opacity-50"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="p-8 text-center text-slate-500 dark:text-slate-400">
+              No se encontraron transacciones.
+            </div>
+          )}
+        </div>
+
+        {/* Desktop View (Table) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
             <thead className="bg-slate-50 dark:bg-slate-900/50">
               <tr>

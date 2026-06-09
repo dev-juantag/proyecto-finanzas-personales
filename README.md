@@ -1,6 +1,6 @@
-# Contador Personal 💵
+# Finanzas Personales 💵
 
-Contador Personal es una aplicación web moderna diseñada para ayudarte a gestionar tus finanzas personales de manera sencilla y eficiente.
+Finanzas Personales es una aplicación web moderna diseñada para ayudarte a gestionar tus finanzas personales de manera sencilla y eficiente.
 
 ## Características Principales
 
