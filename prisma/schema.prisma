@@ -130,3 +130,13 @@ model SavingsGoal {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  email     String
+  token     String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@unique([email, token])
+}

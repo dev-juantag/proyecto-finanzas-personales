@@ -68,7 +68,7 @@ export default function Navbar({ user }: { user: any }) {
           {/* Logo - Desktop only */}
           <div className="h-16 hidden md:flex items-center px-6 border-b border-slate-200 dark:border-slate-700">
             <Wallet className="w-6 h-6 text-emerald-600 mr-2" />
-            <span className="text-lg font-bold text-slate-900 dark:text-white">Contador Personal</span>
+            <span className="text-lg font-bold text-slate-900 dark:text-white">Finanzas Personales</span>
           </div>
 
           <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
