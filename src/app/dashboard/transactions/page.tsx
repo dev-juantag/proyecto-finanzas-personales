@@ -1,7 +1,7 @@
 "use client";
 
 import { useFinanceStore } from "@/store/useFinanceStore";
-import { ArrowUpRight, ArrowDownRight, Trash2, Calendar, CreditCard, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, Trash2, Calendar, CreditCard, ChevronLeft, ChevronRight, Filter, X, TrendingUp } from "lucide-react";
 import DashboardActions from "@/components/dashboard/DashboardActions";
 import { deleteTransaction } from "@/app/actions/finance";
 import { useTransition, useState } from "react";
@@ -12,6 +12,12 @@ export default function TransactionsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
+  // Estados de filtros
+  const [selectedAccount, setSelectedAccount] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
   if (!isLoaded) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -20,8 +26,38 @@ export default function TransactionsPage() {
     );
   }
 
+  // Filtrado de transacciones
+  const filteredTransactions = transactions.filter((tx) => {
+    if (selectedAccount && tx.accountId !== selectedAccount) return false;
+    if (selectedCategory && tx.categoryId !== selectedCategory) return false;
+    if (startDate) {
+      const start = new Date(startDate);
+      start.setHours(0, 0, 0, 0);
+      const txDate = new Date(tx.date);
+      if (txDate < start) return false;
+    }
+    if (endDate) {
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      const txDate = new Date(tx.date);
+      if (txDate > end) return false;
+    }
+    return true;
+  });
+
+  // Totales de las transacciones filtradas
+  const totalIncome = filteredTransactions
+    .filter((tx) => tx.type === "INCOME")
+    .reduce((sum, tx) => sum + tx.amount, 0);
+
+  const totalExpense = filteredTransactions
+    .filter((tx) => tx.type === "EXPENSE")
+    .reduce((sum, tx) => sum + tx.amount, 0);
+
+  const netBalance = totalIncome - totalExpense;
+
   // Lógica de Ordenamiento y Paginación
-  const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const sortedTransactions = [...filteredTransactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const totalPages = Math.ceil(sortedTransactions.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentTransactions = sortedTransactions.slice(startIndex, startIndex + itemsPerPage);
@@ -40,16 +76,145 @@ export default function TransactionsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Transacciones
-          </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Mostrando {startIndex + 1}-{Math.min(startIndex + itemsPerPage, sortedTransactions.length)} de {sortedTransactions.length} movimientos.
-          </p>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Columna Izquierda: Título y Filtros */}
+        <div className="lg:col-span-7 space-y-4">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+              Transacciones
+            </h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Mostrando {sortedTransactions.length > 0 ? startIndex + 1 : 0}-{Math.min(startIndex + itemsPerPage, sortedTransactions.length)} de {sortedTransactions.length} movimientos.
+            </p>
+          </div>
+
+          {/* Barra de Filtros Minimalista (Estilo Unificado con Divisores) */}
+          <div className="flex flex-wrap items-center gap-y-3 bg-white dark:bg-slate-800/80 rounded-2xl md:rounded-full border border-slate-200/60 dark:border-slate-700/60 shadow-sm p-1.5 w-fit">
+            {/* Selector de Cuenta */}
+            <div className="px-1">
+              <select
+                value={selectedAccount}
+                onChange={(e) => {
+                  setSelectedAccount(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="px-4 py-2 bg-transparent text-xs text-slate-805 dark:text-slate-100 focus:outline-none cursor-pointer font-medium"
+              >
+                <option value="" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">Todas las cuentas</option>
+                {accounts.map((acc) => (
+                  <option key={acc.id} value={acc.id} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
+                    {acc.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Divisor */}
+            <div className="hidden sm:block h-5 w-px bg-slate-200 dark:bg-slate-700" />
+
+            {/* Selector de Categoría agrupado */}
+            <div className="px-1">
+              <select
+                value={selectedCategory}
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="px-4 py-2 bg-transparent text-xs text-slate-805 dark:text-slate-100 focus:outline-none cursor-pointer font-medium"
+              >
+                <option value="" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">Todas las categorías</option>
+                <optgroup label="Ingresos" className="font-bold text-emerald-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
+                  {categories.filter(c => c.type === 'INCOME').map((cat) => (
+                    <option key={cat.id} value={cat.id} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-normal">
+                      {cat.name}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Gastos" className="font-bold text-red-650 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
+                  {categories.filter(c => c.type === 'EXPENSE').map((cat) => (
+                    <option key={cat.id} value={cat.id} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-normal">
+                      {cat.name}
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+            </div>
+
+            {/* Divisor */}
+            <div className="hidden sm:block h-5 w-px bg-slate-200 dark:bg-slate-700" />
+
+            {/* Rango de Fechas Estilizado */}
+            <div className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-slate-700 dark:text-slate-200">
+              <div className="flex items-center gap-1 bg-emerald-600 px-2.5 py-1 rounded-full border border-emerald-600">
+                <Calendar className="w-4 h-4 text-white flex-shrink-0" />
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => {
+                    setStartDate(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="bg-transparent border-none outline-none focus:ring-0 text-white w-[100px] text-center text-[10px] cursor-pointer p-0"
+                />
+              </div>
+              <span className="text-slate-450 font-medium text-[10px]">-</span>
+              <div className="flex items-center gap-1 bg-emerald-600 px-2.5 py-1 rounded-full border border-emerald-600">
+                <Calendar className="w-4 h-4 text-white flex-shrink-0" />
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => {
+                    setEndDate(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="bg-transparent border-none outline-none focus:ring-0 text-white w-[100px] text-center text-[10px] cursor-pointer p-0"
+                />
+              </div>
+            </div>
+
+            {/* Botón de limpiar filtros */}
+            {(selectedAccount || selectedCategory || startDate || endDate) && (
+              <>
+                {/* Divisor */}
+                <div className="hidden sm:block h-5 w-px bg-slate-200 dark:bg-slate-700" />
+                <div className="px-2">
+                  <button
+                    onClick={() => {
+                      setSelectedAccount("");
+                      setSelectedCategory("");
+                      setStartDate("");
+                      setEndDate("");
+                      setCurrentPage(1);
+                    }}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 font-semibold transition-all"
+                  >
+                    <X className="w-3.5 h-3.5" /> Limpiar
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
-        <DashboardActions accounts={accounts} categories={categories} />
+
+        {/* Columna Derecha: Resumen Financiero y Totales */}
+        <div className="lg:col-span-5 flex flex-col items-end gap-3 w-full">
+          <DashboardActions accounts={accounts} categories={categories} />
+          
+          {/* Totales Compactos debajo de Resumen Financiero y Nueva Transacción */}
+          <div className="flex items-center gap-3 text-xs bg-slate-50 dark:bg-slate-900/50 px-4 py-2.5 rounded-full border border-slate-150 dark:border-slate-800">
+            <div>
+              <span className="text-slate-500 dark:text-slate-400">Ingresos:</span> <span className="text-emerald-600 dark:text-emerald-400 font-bold">+${totalIncome.toLocaleString("es-ES", { minimumFractionDigits: 2 })}</span>
+            </div>
+            <div className="h-3 w-px bg-slate-200 dark:bg-slate-700" />
+            <div>
+              <span className="text-slate-500 dark:text-slate-400">Gastos:</span> <span className="text-red-650 dark:text-red-400 font-bold">-${totalExpense.toLocaleString("es-ES", { minimumFractionDigits: 2 })}</span>
+            </div>
+            <div className="h-3 w-px bg-slate-200 dark:bg-slate-700" />
+            <div>
+              <span className="text-slate-500 dark:text-slate-400">Neto:</span> <span className={`font-black ${netBalance >= 0 ? "text-emerald-600 dark:text-emerald-405" : "text-red-650 dark:text-red-405"}`}>{netBalance >= 0 ? "+" : "-"}${Math.abs(netBalance).toLocaleString("es-ES", { minimumFractionDigits: 2 })}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="bg-white dark:bg-slate-800 shadow-sm rounded-2xl border border-slate-100 dark:border-slate-700 overflow-hidden">
@@ -206,10 +371,9 @@ export default function TransactionsPage() {
               {Array.from({ length: totalPages }, (_, i) => i + 1)
                 .filter(p => p === 1 || p === totalPages || (p >= currentPage - 1 && p <= currentPage + 1))
                 .map((p, i, arr) => (
-                  <>
-                    {i > 0 && arr[i-1] !== p - 1 && <span className="text-slate-400">...</span>}
+                  <span key={p} className="inline-flex items-center">
+                    {i > 0 && arr[i-1] !== p - 1 && <span className="text-slate-400 px-1">...</span>}
                     <button
-                      key={p}
                       onClick={() => setCurrentPage(p)}
                       className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
                         currentPage === p 
@@ -219,7 +383,7 @@ export default function TransactionsPage() {
                     >
                       {p}
                     </button>
-                  </>
+                  </span>
                 ))}
             </div>
 
